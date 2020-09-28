@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QAbstractListModel>
+#include <QList>
 
 class ConversionModel final : public QAbstractListModel
 {
@@ -22,7 +23,7 @@ class ConversionModel final : public QAbstractListModel
     QVariant data(const QModelIndex &index, int role) const override;
     QHash<int, QByteArray> roleNames() const override;
 
-    Q_INVOKABLE void setInput(const QString &value);
+    Q_INVOKABLE void setInput(const QList<QString> &values);
     Q_INVOKABLE QString setOutput(const QString &value);
 
     Q_INVOKABLE QStringList getLoadFT();
@@ -33,12 +34,15 @@ class ConversionModel final : public QAbstractListModel
     Q_INVOKABLE void openOutput();
     Q_INVOKABLE void openOutputFolder();
 
+    Q_INVOKABLE QStringList toStringList(const QList<QUrl> &urls);
+
   Q_SIGNALS:
     void setComboBoxIndex(int index);
 
   private:
     QVector<QString> m_conversions;
     QString m_input;
+    QList<QString> m_input_list;
     QString m_output;
 
     void deduceInputOutput() noexcept;

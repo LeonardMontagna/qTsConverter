@@ -12,4 +12,5 @@ class XlsxBuilder : public Builder
     ~XlsxBuilder() override          = default;
 
     bool build(const Translations &trs) const override;
+    //    int m_locationCol{ 4 };
 };

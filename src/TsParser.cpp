@@ -20,9 +20,16 @@ std::pair<Translations, QString> TsParser::parse() const
     Translations translations;
 
     auto contexts = doc.elementsByTagName(QStringLiteral("context"));
+    auto header   = doc.elementsByTagName("TS");
+    auto lang     = doc.firstChildElement(QStringLiteral("TS"))
+                    .attributeNode(QStringLiteral("language"))
+                    .value();
+
     for (int i = 0; i < contexts.size(); ++i) {
         auto nodeCtx = contexts.item(i);
         TranslationContext context;
+        context.language = lang;
+
         context.name = nodeCtx.firstChildElement(QStringLiteral("name")).text();
         auto msgs    = nodeCtx.childNodes();
         for (auto j = 0; j < msgs.size(); j++) {

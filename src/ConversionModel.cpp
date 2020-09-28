@@ -36,9 +36,10 @@ QHash<int, QByteArray> ConversionModel::roleNames() const
     return { { Roles::String, "stringRole" } };
 }
 
-void ConversionModel::setInput(const QString &value)
+void ConversionModel::setInput(const QList<QString> &values)
 {
-    m_input = value;
+    m_input_list = values;
+    // m_input = values;
     deduceInputOutput();
 }
 
@@ -146,4 +147,9 @@ void ConversionModel::openOutputFolder()
     int pos = replaced.lastIndexOf(QRegExp("/.*"));
     replaced.replace(pos, replaced.length() - pos, "");
     QDesktopServices::openUrl(QUrl::fromLocalFile(replaced));
+}
+
+QStringList ConversionModel::toStringList(const QList<QUrl> &urls)
+{
+    return QUrl::toStringList(urls);
 }

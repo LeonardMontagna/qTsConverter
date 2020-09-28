@@ -2,22 +2,20 @@
 
 #include <QString>
 #include <vector>
-// struct TranslationHeader {
-//    QString language;
-//};
+struct TranslationHeader {
+    QString language;
+};
 
 struct TranslationMessage {
     QString source;
     QString translation;
-    std::vector<std::pair<int, QString>> translations;
-    // QString language;
     std::vector<std::pair<QString, int>> locations;
 };
 
 struct TranslationContext {
     QString name;
-    QString language;
     std::vector<TranslationMessage> messages;
+    TranslationHeader language;
 };
 
-using Translations = std::vector<TranslationContext>;
+using TranslationsHeader = std::vector<TranslationContext>;

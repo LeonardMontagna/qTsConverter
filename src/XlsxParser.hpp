@@ -17,4 +17,6 @@ class XlsxParser : public Parser
     XlsxParser &operator=(XlsxParser &&) = delete;
 
     std::pair<Translations, QString> parse() const override;
+
+  private:
 };

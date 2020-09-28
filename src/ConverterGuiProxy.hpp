@@ -42,7 +42,7 @@ class ConverterGuiProxy : public QObject
     void conversionCompleted();
 
   public slots:
-    void convert(ConverterGuiProxy::QConversionType type, QString input,
+    void convert(ConverterGuiProxy::QConversionType type, QStringList input,
                  QString output, const QString &fieldSeparator,
                  const QString &stringSeparator, const QString &tsVersion);
 

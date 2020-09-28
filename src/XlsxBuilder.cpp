@@ -2,10 +2,8 @@
 
 #include "TitleHeaders.hpp"
 
-#include <QFile>
 #include <QTextStream>
 #include <QtDebug>
-#include <xlsx/xlsxdocument.h>
 
 XlsxBuilder::XlsxBuilder(InOutParameter parameter) :
     Builder{ std::move(parameter) }
@@ -14,26 +12,37 @@ XlsxBuilder::XlsxBuilder(InOutParameter parameter) :
         m_ioParameter.outputFile += ".xlsx";
     }
 }
+// QXlsx::Document xlsx;
 
 bool XlsxBuilder::build(const Translations &trs) const
 {
-    QXlsx::Document xlsx;
+    if (!m_ioParameter.outputFile.isNull()) {
+        m_locationCol++;
+        //        isMultifile = true;
+
+    } else {
+        m_locationCol = 4;
+    }
+
     xlsx.write(1, 1, TitleHeader::Context);
     xlsx.write(1, 2, TitleHeader::Source);
-    xlsx.write(1, 3, TitleHeader::Translation);
-    xlsx.write(1, 4, TitleHeader::Location);
+    xlsx.write(1, m_locationCol, TitleHeader::Location);
 
     int row{ 2 };
     int col{ 1 };
     for (const auto &tr : trs) {
+        xlsx.write(1, m_locationCol - 1, tr.language);
+
         for (const auto &msg : tr.messages) {
-            xlsx.write(row, col++, tr.name);
-            xlsx.write(row, col++, msg.source);
-            xlsx.write(row, col++, msg.translation);
+            if (m_locationCol > 4) {
+                xlsx.write(row, col++, tr.name);
+                xlsx.write(row, col++, msg.source);
+            }
+            xlsx.write(row, m_locationCol - 1, msg.translation);
 
             for (const auto &loc : msg.locations) {
                 xlsx.write(
-                    row, col++,
+                    row, m_locationCol,
                     QString(loc.first + " - " + QString::number(loc.second)));
             }
             ++row;
@@ -45,6 +54,7 @@ bool XlsxBuilder::build(const Translations &trs) const
         qWarning() << "error writing file";
         return false;
     }
+    //    m_locationCol = 4;
 
     return true;
 }

@@ -21,6 +21,7 @@ add_executable(${CMAKE_PROJECT_NAME}
     Builder.cpp             Builder.hpp
     ConversionModel.cpp     ConversionModel.hpp
     TranslationObject.hpp
+    TranslationObjectWithHeader.hpp
     CsvProperty.hpp
     InOutParameter.hpp
     TitleHeaders.hpp

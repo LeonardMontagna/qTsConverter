@@ -1,25 +1,52 @@
 #include "ConverterGuiProxy.hpp"
 
+#include "TitleHeaders.hpp"
+
 #include <QDebug>
 
 ConverterGuiProxy::ConverterGuiProxy(QObject *parent) : QObject(parent) {}
 
-void ConverterGuiProxy::convert(QConversionType type, QString input,
+void ConverterGuiProxy::convert(QConversionType type, QStringList input,
                                 QString output, const QString &fieldSeparator,
                                 const QString &stringSeparator,
                                 const QString &tsVersion)
 {
-    // Remove file:// on linux and file:/// on windows
-    input  = QUrl::fromUserInput(input).toLocalFile();
-    output = QUrl::fromUserInput(output).toLocalFile();
+    if (type == Xlsx2Ts) {
+        for (int i = 0; i < 4; i++) {
+            output = QUrl::fromUserInput(output + "i").toLocalFile();
+            m_languages++;
 
-    auto converter = ConverterFactory::make_converter(
-        static_cast<ConverterFactory::ConversionType>(type), input, output,
-        fieldSeparator, stringSeparator, tsVersion);
+            // Remove file:// on linux and file:/// on windows
+            foreach (QString inputFile, input) {
+                QString fileName = QUrl::fromUserInput(inputFile).toLocalFile();
+                QTextStream(stdout) << "Converter: " << m_languages << endl;
 
-    const auto results = converter->process();
-    setConversionInfo(results.success, results.message,
-                      results.detailedMessage);
+                auto converter = ConverterFactory::make_converter(
+                    static_cast<ConverterFactory::ConversionType>(type),
+                    fileName, output, fieldSeparator, stringSeparator,
+                    tsVersion);
+
+                const auto results = converter->process();
+                setConversionInfo(results.success, results.message,
+                                  results.detailedMessage);
+            }
+        }
+    } else {
+        output = QUrl::fromUserInput(output).toLocalFile();
+
+        // Remove file:// on linux and file:/// on windows
+        foreach (QString inputFile, input) {
+            QString fileName = QUrl::fromUserInput(inputFile).toLocalFile();
+
+            auto converter = ConverterFactory::make_converter(
+                static_cast<ConverterFactory::ConversionType>(type), fileName,
+                output, fieldSeparator, stringSeparator, tsVersion);
+
+            const auto results = converter->process();
+            setConversionInfo(results.success, results.message,
+                              results.detailedMessage);
+        }
+    }
 }
 
 bool ConverterGuiProxy::convSuccessfull() const

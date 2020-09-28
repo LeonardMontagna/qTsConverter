@@ -1,5 +1,7 @@
 #include "TsBuilder.hpp"
 
+#include "TitleHeaders.hpp"
+
 #include <QtXml>
 
 TsBuilder::TsBuilder(InOutParameter parameter) : Builder{ std::move(parameter) }
@@ -18,6 +20,7 @@ bool TsBuilder::build(const Translations &trs) const
     }
 
     QDomDocument doc(QStringLiteral("TS"));
+    m_languages++;
 
     auto root = doc.createElement(QStringLiteral("TS"));
     root.setAttribute(QStringLiteral("version"), m_ioParameter.tsVersion);
@@ -40,9 +43,15 @@ bool TsBuilder::build(const Translations &trs) const
             auto source = doc.createElement(QStringLiteral("source"));
             source.appendChild(doc.createTextNode(msg.source));
             message.appendChild(source);
+            //            QTextStream(stdout) << "Ts: " << m_languages << endl;
 
             auto translation = doc.createElement(QStringLiteral("translation"));
-            translation.appendChild(doc.createTextNode(msg.translation));
+            //            translation.appendChild(doc.createTextNode(msg.translation));
+            for (const auto &tr : msg.translations) {
+                QTextStream(stdout) << "Ts: " << tr.second << endl;
+                //                    if (tr.first == 1)
+                translation.appendChild(doc.createTextNode(tr.second));
+            }
             message.appendChild(translation);
             context.appendChild(message);
         }

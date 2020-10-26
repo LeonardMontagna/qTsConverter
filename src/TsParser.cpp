@@ -40,12 +40,19 @@ std::pair<Translations, QString> TsParser::parse() const
             }
 
             TranslationMessage msg;
-            msg.source =
-                nodeMsg.firstChildElement(QStringLiteral("source")).text();
-            msg.translation =
-                nodeMsg.firstChildElement(QStringLiteral("translation")).text();
-            msg.locations.emplace_back(wrapLocation(nodeMsg));
-            context.messages.emplace_back(msg);
+
+            if (nodeMsg.firstChildElement(QStringLiteral("translation"))
+                    .attributeNode(QStringLiteral("type"))
+                    .value() == "vanished") {
+            } else {
+                msg.source =
+                    nodeMsg.firstChildElement(QStringLiteral("source")).text();
+                msg.translation =
+                    nodeMsg.firstChildElement(QStringLiteral("translation"))
+                        .text();
+                msg.locations.emplace_back(wrapLocation(nodeMsg));
+                context.messages.emplace_back(msg);
+            }
         }
 
         translations.emplace_back(context);

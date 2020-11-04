@@ -11,7 +11,7 @@ import app 1.0
 Window {
     title: "qTsConverter " + version
 
-    minimumHeight: 220
+    minimumHeight: 320
     minimumWidth: 800
 
     height: minimumHeight
@@ -29,6 +29,7 @@ Window {
         id: settings
         property string lastSourceInput
         property string lastSourceOutput
+        property bool multiLanguage
     }
 
     GridLayout {
@@ -39,11 +40,21 @@ Window {
 
         columns: 1
         rows: 3
+        RowLayout {
+            Text {
+                text: "Multi-Language:"
+            }
+            CheckBox {
+                id: multiLanguageCheckBox
+                Component.onCompleted: settings.multiLanguage = false
+                onCheckedChanged: settings.multiLanguage = checkState
+            }
+        }
 
         RowLayout {
 
             Text {
-                text: "Source filename:"
+                text: "Source filename(s):"
             }
 
             Text {
@@ -69,7 +80,7 @@ Window {
         RowLayout {
 
             Text {
-                text: "Destination filename:"
+                text: "Destination:"
             }
 
             Text {
@@ -82,11 +93,19 @@ Window {
 
             Button {
                 text: "Browse"
+
                 highlighted: true
                 onClicked: {
-                    saveFileDialog.nameFilters = conversionModel.getSaveFT()
-                    saveFileDialog.folder = settings.lastSourceOutput
-                    saveFileDialog.open()
+                    if (settings.multiLanguage === true
+                            && conversionModel.getInputFT(
+                                sourceInput.text) !== "TS") {
+                        saveFolderDialog.folder = settings.lastSourceOutput
+                        saveFolderDialog.open()
+                    } else {
+                        saveFileDialog.nameFilters = conversionModel.getSaveFT()
+                        saveFileDialog.folder = settings.lastSourceOutput
+                        saveFileDialog.open()
+                    }
                 }
             }
         }
@@ -202,10 +221,14 @@ Window {
     SaveFileDialog {
         id: saveFileDialog
         objectName: "saveFileDialog"
-
         onAccepted: sourceOutput.text = saveFileDialog.file
     }
 
+    SaveFolderDialog {
+        id: saveFolderDialog
+        objectName: "saveFolderDialog"
+        onAccepted: sourceOutput.text = saveFolderDialog.folder
+    }
     FinishDialog {
         id: finishDialog
         objectName: "finishDialog"

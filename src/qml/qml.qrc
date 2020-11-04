@@ -17,5 +17,6 @@
         <file>assets/logos/cover.png</file>
         <file>assets/logos/default.png</file>
         <file>assets/logos/profile.png</file>
+        <file>SaveFolderDialog.qml</file>
     </qresource>
 </RCC>

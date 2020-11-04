@@ -33,6 +33,7 @@ class ConversionModel final : public QAbstractListModel
     Q_INVOKABLE void openOutput();
     Q_INVOKABLE void openOutputFolder();
 
+    Q_INVOKABLE QString getInputFT(const QString &value) noexcept;
   Q_SIGNALS:
     void setComboBoxIndex(int index);
 

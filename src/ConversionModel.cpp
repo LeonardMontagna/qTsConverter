@@ -98,6 +98,15 @@ QStringList ConversionModel::getLoadFT()
     return QStringList({ "All files (*)" });
 }
 
+QString ConversionModel::getInputFT(const QString &value) noexcept
+{
+    if (value.isEmpty()) {
+        return "";
+    }
+    QStringList helperStringList = value.split(".");
+    return helperStringList.last();
+}
+
 void ConversionModel::deduceInputOutput() noexcept
 {
     if (m_input.isEmpty() || m_output.isEmpty()) {

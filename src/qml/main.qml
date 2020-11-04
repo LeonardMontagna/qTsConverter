@@ -58,9 +58,10 @@ Window {
                 text: "Browse"
                 highlighted: true
                 onClicked: {
-                    loadFileDialog.nameFilters = conversionModel.getLoadFT();
-                    loadFileDialog.folder = settings.lastSourceInput;
-                    loadFileDialog.open();
+                    loadFileDialog.nameFilters = conversionModel.getLoadFT()
+                    loadFileDialog.folder = settings.lastSourceInput
+                    settings.lastSourceInput = loadFileDialog.folder
+                    loadFileDialog.open()
                 }
             }
         }
@@ -75,16 +76,17 @@ Window {
                 id: sourceOutput
                 color: Material.color(Material.Grey)
                 Layout.fillWidth: true
-                onTextChanged: sourceOutput.text = conversionModel.setOutput(text)
+                onTextChanged: sourceOutput.text = conversionModel.setOutput(
+                                   text)
             }
 
             Button {
                 text: "Browse"
                 highlighted: true
                 onClicked: {
-                    saveFileDialog.nameFilters = conversionModel.getSaveFT();
-                    saveFileDialog.folder = settings.lastSourceOutput;
-                    saveFileDialog.open();
+                    saveFileDialog.nameFilters = conversionModel.getSaveFT()
+                    saveFileDialog.folder = settings.lastSourceOutput
+                    saveFileDialog.open()
                 }
             }
         }
@@ -96,9 +98,9 @@ Window {
                 id: comboType
                 model: conversionModel
                 onActivated: {
-                    conversionModel.setIndex(comboType.currentIndex);
-                    loadFileDialog.nameFilters = conversionModel.getLoadFT();
-                    saveFileDialog.nameFilters = conversionModel.getSaveFT();
+                    conversionModel.setIndex(comboType.currentIndex)
+                    loadFileDialog.nameFilters = conversionModel.getLoadFT()
+                    saveFileDialog.nameFilters = conversionModel.getSaveFT()
                 }
             }
 
@@ -213,8 +215,8 @@ Window {
 
     Connections {
         function onSetComboBoxIndex(index) {
-            comboType.currentIndex = index;
-            conversionModel.setIndex(comboType.currentIndex);
+            comboType.currentIndex = index
+            conversionModel.setIndex(comboType.currentIndex)
         }
         target: conversionModel
     }

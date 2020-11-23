@@ -12,7 +12,7 @@ void ConverterGuiProxy::convert(QConversionType type, QStringList input,
                                 const QString &tsVersion)
 {
     if (type == Xlsx2Ts) {
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 6; i++) {
             output = QUrl::fromUserInput(output + "i").toLocalFile();
             m_languages++;
 

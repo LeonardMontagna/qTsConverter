@@ -13,4 +13,4 @@ struct TitleHeader {
 static QString Language  = "";
 static int m_locationCol = 4;
 static QXlsx::Document xlsx;
-static int m_languages = 3;
+static int LanguageColumn = 3;

@@ -2,6 +2,7 @@
 
 #include "ConverterFactory.hpp"
 
+#include <QDebug>
 #include <QDesktopServices>
 #include <QUrl>
 
@@ -122,6 +123,9 @@ void ConversionModel::deduceInputOutput() noexcept
                m_input.endsWith(QStringLiteral(".xlsx"))) {
         if (m_output.endsWith(QStringLiteral(".ts"))) {
             currentIndex = ConverterFactory::Xlsx2Ts;
+        } else {
+            // Currently there's no other desired option
+            currentIndex = ConverterFactory::Xlsx2Ts;
         }
     }
 
@@ -152,4 +156,15 @@ void ConversionModel::openOutputFolder()
 QStringList ConversionModel::toStringList(const QList<QUrl> &urls)
 {
     return QUrl::toStringList(urls);
+}
+
+QString ConversionModel::getInputFT(const QString &value) noexcept
+{
+    qDebug() << value;
+
+    if (value.isEmpty()) {
+        return "";
+    }
+    QStringList helperStringList = value.split(".");
+    return helperStringList.last();
 }

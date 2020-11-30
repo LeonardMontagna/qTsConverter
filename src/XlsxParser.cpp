@@ -26,7 +26,7 @@ std::pair<Translations, QString> XlsxParser::parse() const
     Translations translations;
     TranslationContext context;
     TranslationMessage msg;
-    m_languages++;
+    LanguageColumn++;
     const auto lastRow = xlsx.dimension().lastRow();
 
     for (auto row = 2; row <= lastRow; ++row) {
@@ -37,13 +37,11 @@ std::pair<Translations, QString> XlsxParser::parse() const
         //            xlsx.read(row, m_languages).toString();
         //        QTextStream(stdout) << "Ts: " << m_languages << endl;
 
-        //        for (int i = 3; i < lastColumn - 1; i++) {
-        if (m_languages - 1 < lastColumn) {
-            const auto loc = xlsx.read(row, m_languages - 1).toString();
+        if (LanguageColumn - 1 < lastColumn) {
+            const auto loc = xlsx.read(row, LanguageColumn - 1).toString();
 
-            msg.translations.emplace_back(m_languages - 1, loc);
+            msg.translations.emplace_back(LanguageColumn - 1, loc);
         }
-        //        }
 
         // fix this
         for (auto col = lastColumn; col <= lastColumn; ++col) {
@@ -68,6 +66,8 @@ std::pair<Translations, QString> XlsxParser::parse() const
         msg.locations.clear();
         msg.translations.clear();
     }
-
+    if (LanguageColumn == lastColumn) {
+        LanguageColumn = 3;
+    }
     return std::make_pair(translations, "");
 }

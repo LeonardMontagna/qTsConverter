@@ -3,6 +3,7 @@
 #include "TitleHeaders.hpp"
 
 #include <QDebug>
+#include <qfiledialog.h>
 
 ConverterGuiProxy::ConverterGuiProxy(QObject *parent) : QObject(parent) {}
 
@@ -12,14 +13,17 @@ void ConverterGuiProxy::convert(QConversionType type, QStringList input,
                                 const QString &tsVersion)
 {
     if (type == Xlsx2Ts) {
-        for (int i = 0; i < 6; i++) {
-            output = QUrl::fromUserInput(output + "i").toLocalFile();
-            m_languages++;
+        QXlsx::Document xlsx(QUrl::fromUserInput(input[0]).toLocalFile());
+        for (int i = LanguageColumn;
+             i < xlsx.dimension().lastColumn() /*m_languages*/; i++) {
+            QString path           = QFileInfo(input[0]).dir().path();
+            QString outputFileName = xlsx.read(1, i).toString();
+            output =
+                QUrl::fromUserInput(path + "/" + outputFileName).toLocalFile();
 
             // Remove file:// on linux and file:/// on windows
             foreach (QString inputFile, input) {
                 QString fileName = QUrl::fromUserInput(inputFile).toLocalFile();
-                QTextStream(stdout) << "Converter: " << m_languages << endl;
 
                 auto converter = ConverterFactory::make_converter(
                     static_cast<ConverterFactory::ConversionType>(type),

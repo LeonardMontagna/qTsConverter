@@ -4,5 +4,5 @@ import Qt.labs.platform 1.1
 FileDialog {
     title: qsTr("Select File")
     nameFilters: conversionModel.getLoadFT()
-    fileMode: FileDialog.OpenFiles
+    fileMode: settings.multiTs2Xlsx ? FileDialog.OpenFiles : FileDialog.OpenFile
 }

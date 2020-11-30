@@ -11,8 +11,8 @@ import app 1.0
 Window {
     title: "qTsConverter " + version
 
-    minimumHeight: 220
-    minimumWidth: 800
+    minimumHeight: 340
+    minimumWidth: 840
 
     height: minimumHeight
     width: minimumWidth
@@ -31,17 +31,65 @@ Window {
         property string lastSourceInput
         property string lastSourceOutput
         property alias textList: sourceInput.model
+        property bool multiXlsx2Ts: false
+        property bool multiTs2Xlsx: false
     }
 
     GridLayout {
         anchors {
             fill: parent
-            margins: 20
+            margins: 15
         }
 
         columns: 1
-        rows: 3
+        rows: 4
+        RowLayout {
+            RowLayout {
+                Text {
+                    id: multi
+                    text: qsTr("Select Multi-File mode:")
+                }
+                ColumnLayout {
 
+                    spacing: -15
+                    CustomRadioButton {
+                        id: nonMulti
+                        buttonText: qsTr("Non-Multilanguage")
+                        checked: true
+                        onClicked: {
+                            settings.multiTs2Xlsx = false
+                            settings.multiXlsx2Ts = false
+                            comboType.currentIndex = 4
+                        }
+                    }
+
+                    CustomRadioButton {
+                        id: ts2Xlsx
+                        buttonText: qsTr("Multilanguage: TS to XLSX")
+                        onClicked: {
+                            settings.multiTs2Xlsx = true
+                            settings.multiXlsx2Ts = false
+                            comboType.currentIndex = 2
+                        }
+                    }
+                    CustomRadioButton {
+                        id: xlsx2Ts
+                        buttonText: qsTr("Multilanguage: XLSX to TS")
+                        onClicked: {
+                            settings.multiTs2Xlsx = false
+                            settings.multiXlsx2Ts = true
+                            comboType.currentIndex = 3
+                        }
+                    }
+
+                    //                Rectangle {
+                    //                    width: 20
+                    //                    height: 20
+                    //                    color: settings.multiXlsx2Ts ? "#FF00FF" : settings.multiTs2Xlsx ? "#0000FF" : "#008000"
+                    //                }
+                }
+            }
+        }
         RowLayout {
 
             Text {
@@ -70,6 +118,7 @@ Window {
             Button {
                 text: "Browse"
                 highlighted: true
+
                 onClicked: {
                     loadFileDialog.nameFilters = conversionModel.getLoadFT()
                     if (loadFileDialog.folder !== "")
@@ -100,9 +149,16 @@ Window {
                 highlighted: true
                 onClicked: {
 
-                    saveFileDialog.nameFilters = conversionModel.getSaveFT()
-                    saveFileDialog.folder = settings.lastSourceInput
-                    saveFileDialog.open()
+                    if (settings.multiXlsx2Ts === true
+                            && conversionModel.getInputFT(
+                                settings.textList) === "xlsx") {
+                        saveFolderDialog.folder = settings.lastSourceOutput
+                        saveFolderDialog.open()
+                    } else {
+                        saveFileDialog.nameFilters = conversionModel.getSaveFT()
+                        saveFileDialog.folder = settings.lastSourceOutput
+                        saveFileDialog.open()
+                    }
                 }
             }
         }
@@ -221,6 +277,12 @@ Window {
             settings.textList = conversionModel.toStringList(
                         loadFileDialog.files)
         }
+    }
+
+    SaveFolderDialog {
+        id: saveFolderDialog
+        objectName: "saveFolderDialog"
+        onAccepted: sourceOutput.text = saveFolderDialog.folder
     }
 
     SaveFileDialog {

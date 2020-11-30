@@ -14,16 +14,21 @@ TsBuilder::TsBuilder(InOutParameter parameter) : Builder{ std::move(parameter) }
 bool TsBuilder::build(const Translations &trs) const
 {
     QFile output(m_ioParameter.outputFile);
+
     if (!output.open(QFile::WriteOnly | QFile::Truncate)) {
         qDebug() << "can't open file" << output.fileName();
         return false;
     }
 
     QDomDocument doc(QStringLiteral("TS"));
-    m_languages++;
+    //    m_languages++;
 
     auto root = doc.createElement(QStringLiteral("TS"));
     root.setAttribute(QStringLiteral("version"), m_ioParameter.tsVersion);
+
+    QFileInfo fileInfo(output.fileName());
+    QString language = fileInfo.baseName();
+    root.setAttribute(QStringLiteral("language"), language);
 
     for (const auto &ctxs : trs) {
         auto context = doc.createElement(QStringLiteral("context"));
@@ -48,7 +53,8 @@ bool TsBuilder::build(const Translations &trs) const
             auto translation = doc.createElement(QStringLiteral("translation"));
             //            translation.appendChild(doc.createTextNode(msg.translation));
             for (const auto &tr : msg.translations) {
-                QTextStream(stdout) << "Ts: " << tr.second << endl;
+                //                QTextStream(stdout) << "Ts: " << tr.second <<
+                //                endl;
                 //                    if (tr.first == 1)
                 translation.appendChild(doc.createTextNode(tr.second));
             }

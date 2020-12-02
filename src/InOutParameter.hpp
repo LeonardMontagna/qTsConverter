@@ -17,4 +17,5 @@ struct InOutParameter {
     QString outputFile;
     QString tsVersion;
     CsvProperty csvProperty;
+    static int languages;
 };

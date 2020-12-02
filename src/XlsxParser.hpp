@@ -18,5 +18,5 @@ class XlsxParser : public Parser
 
     std::pair<Translations, QString> parse() const override;
 
-  private:
+    //  private:
 };

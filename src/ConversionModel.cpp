@@ -4,6 +4,7 @@
 
 #include <QDebug>
 #include <QDesktopServices>
+#include <QString>
 #include <QUrl>
 
 ConversionModel::ConversionModel(QObject *parent) :
@@ -40,7 +41,6 @@ QHash<int, QByteArray> ConversionModel::roleNames() const
 void ConversionModel::setInput(const QList<QString> &values)
 {
     m_input_list = values;
-    // m_input = values;
     deduceInputOutput();
 }
 
@@ -160,8 +160,6 @@ QStringList ConversionModel::toStringList(const QList<QUrl> &urls)
 
 QString ConversionModel::getInputFT(const QString &value) noexcept
 {
-    qDebug() << value;
-
     if (value.isEmpty()) {
         return "";
     }

@@ -1,5 +1,7 @@
 #include "Converter.hpp"
 
+#include <QString>
+
 Converter::Converter(std::unique_ptr<Parser> parser,
                      std::unique_ptr<Builder> builder) :
     m_parser{ std::move(parser) },

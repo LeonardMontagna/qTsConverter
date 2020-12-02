@@ -54,7 +54,7 @@ Window {
                     spacing: -15
                     CustomRadioButton {
                         id: nonMulti
-                        buttonText: qsTr("Non-Multilanguage")
+                        buttonText: qsTr("Single Language")
                         checked: true
                         onClicked: {
                             settings.multiTs2Xlsx = false
@@ -81,12 +81,6 @@ Window {
                             comboType.currentIndex = 3
                         }
                     }
-
-                    //                Rectangle {
-                    //                    width: 20
-                    //                    height: 20
-                    //                    color: settings.multiXlsx2Ts ? "#FF00FF" : settings.multiTs2Xlsx ? "#0000FF" : "#008000"
-                    //                }
                 }
             }
         }
@@ -100,7 +94,6 @@ Window {
             ListView {
                 id: sourceInput
                 Layout.fillWidth: true
-                //Layout:
                 Layout.alignment: parent.verticalCenter
                 Layout.minimumHeight: 40
                 model: settings.textList
@@ -250,12 +243,7 @@ Window {
             text: "Convert"
             highlighted: true
             Material.background: Material.Orange
-            enabled: //comboType.currentIndex !== ConverterGuiProxy.Dummy
-                     //&& sourceInput.text.length !== 0
-
-
-                     /*sourceInput.text.length !== 0
-                     &&*/ sourceOutput.text.length !== 0
+            enabled: sourceOutput.text.length !== 0
                           && fieldSeparator.text.length !== 0
                           && stringSeparator.text.length !== 0
             onClicked: {
@@ -270,10 +258,7 @@ Window {
     LoadFileDialog {
         id: loadFileDialog
         objectName: "loadFileDialog"
-        //        onAccepted: sourceInput.text = loadFileDialog.file
         onAccepted: {
-            //sourceInput.model = loadFileDialog.files
-            //            settings.textList = loadFileDialog.files
             settings.textList = conversionModel.toStringList(
                         loadFileDialog.files)
         }

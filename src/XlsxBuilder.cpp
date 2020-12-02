@@ -5,6 +5,9 @@
 #include <QTextStream>
 #include <QtDebug>
 
+// TODO: Fix bug where using Ts2Xlsx qtsconverter multiple times results in an
+// excel table with duplicate values
+
 XlsxBuilder::XlsxBuilder(InOutParameter parameter) :
     Builder{ std::move(parameter) }
 {
@@ -12,17 +15,16 @@ XlsxBuilder::XlsxBuilder(InOutParameter parameter) :
         m_ioParameter.outputFile += ".xlsx";
     }
 }
-// QXlsx::Document xlsx;
 
 bool XlsxBuilder::build(const Translations &trs) const
 {
     if (!m_ioParameter.outputFile.isNull()) {
         m_locationCol++;
-        //        isMultifile = true;
 
     } else {
         m_locationCol = 4;
     }
+    //    m_ioParameter.languages++;
 
     xlsx.write(1, 1, TitleHeader::Context);
     xlsx.write(1, 2, TitleHeader::Source);
@@ -54,7 +56,6 @@ bool XlsxBuilder::build(const Translations &trs) const
         qWarning() << "error writing file";
         return false;
     }
-    //    m_locationCol = 4;
 
     return true;
 }

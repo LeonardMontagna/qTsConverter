@@ -12,4 +12,9 @@ class ConverterFactory
     make_converter(ConversionType type, const QString &in, const QString &out,
                    const QString &fieldSep, const QString &stringSep,
                    const QString &tsVersion);
+
+    //    static std::unique_ptr<Converter>
+    //    make_converter(const QString &in, const QString &out,
+    //                   const QString &fieldSep, const QString &stringSep,
+    //                   const QString &tsVersion /*, int languages*/);
 };

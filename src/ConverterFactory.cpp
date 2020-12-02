@@ -53,3 +53,16 @@ std::unique_ptr<Converter> ConverterFactory::make_converter(
 
     assert(false);
 }
+// std::unique_ptr<Converter> ConverterFactory::make_converter(
+//    const QString &in, const QString &out, const QString &fieldSep,
+//    const QString &stringSep, const QString &tsVersion, const int languages)
+//{
+//    int languages = 4;
+//    return std::make_unique<Converter>(
+//        std::make_unique<TsParser>(InOutParameter{
+//            in, out, tsVersion, CsvProperty{ stringSep, fieldSep } }),
+//        std::make_unique<XlsxBuilder>(
+//            InOutParameter{ in, out, tsVersion,
+//                            CsvProperty{ fieldSep, stringSep } },
+//            languages));
+//}

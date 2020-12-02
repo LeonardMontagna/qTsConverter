@@ -28,7 +28,7 @@ void ConverterGuiProxy::convert(QConversionType type, QStringList input,
                 auto converter = ConverterFactory::make_converter(
                     static_cast<ConverterFactory::ConversionType>(type),
                     fileName, output, fieldSeparator, stringSeparator,
-                    tsVersion);
+                    tsVersion, 0);
 
                 const auto results = converter->process();
                 setConversionInfo(results.success, results.message,
@@ -39,13 +39,14 @@ void ConverterGuiProxy::convert(QConversionType type, QStringList input,
         output = QUrl::fromUserInput(output).toLocalFile();
 
         // Remove file:// on linux and file:/// on windows
+        int i = 4;
         foreach (QString inputFile, input) {
             QString fileName = QUrl::fromUserInput(inputFile).toLocalFile();
 
             auto converter = ConverterFactory::make_converter(
                 static_cast<ConverterFactory::ConversionType>(type), fileName,
-                output, fieldSeparator, stringSeparator, tsVersion);
-
+                output, fieldSeparator, stringSeparator, tsVersion, i);
+            i++;
             const auto results = converter->process();
             setConversionInfo(results.success, results.message,
                               results.detailedMessage);

@@ -18,33 +18,25 @@ XlsxBuilder::XlsxBuilder(InOutParameter parameter) :
 
 bool XlsxBuilder::build(const Translations &trs) const
 {
-    if (!m_ioParameter.outputFile.isNull()) {
-        m_locationCol++;
-
-    } else {
-        m_locationCol = 4;
-    }
-    //    m_ioParameter.languages++;
-
     xlsx.write(1, 1, TitleHeader::Context);
     xlsx.write(1, 2, TitleHeader::Source);
-    xlsx.write(1, m_locationCol, TitleHeader::Location);
+    xlsx.write(1, m_ioParameter.lang, TitleHeader::Location);
 
     int row{ 2 };
     int col{ 1 };
     for (const auto &tr : trs) {
-        xlsx.write(1, m_locationCol - 1, tr.language);
+        xlsx.write(1, m_ioParameter.lang - 1, tr.language);
 
         for (const auto &msg : tr.messages) {
-            if (m_locationCol > 4) {
+            if (m_ioParameter.lang > 4) {
                 xlsx.write(row, col++, tr.name);
                 xlsx.write(row, col++, msg.source);
             }
-            xlsx.write(row, m_locationCol - 1, msg.translation);
+            xlsx.write(row, m_ioParameter.lang - 1, msg.translation);
 
             for (const auto &loc : msg.locations) {
                 xlsx.write(
-                    row, m_locationCol,
+                    row, m_ioParameter.lang,
                     QString(loc.first + " - " + QString::number(loc.second)));
             }
             ++row;

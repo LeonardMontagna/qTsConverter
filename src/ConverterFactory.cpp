@@ -12,39 +12,47 @@
 std::unique_ptr<Converter> ConverterFactory::make_converter(
     ConverterFactory::ConversionType type, const QString &in,
     const QString &out, const QString &fieldSep, const QString &stringSep,
-    const QString &tsVersion)
+    const QString &tsVersion, const int lang)
 {
     switch (type) {
         case ConversionType::Ts2Csv:
             return std::make_unique<Converter>(
-                std::make_unique<TsParser>(InOutParameter{
-                    in, out, tsVersion, CsvProperty{ stringSep, fieldSep } }),
-                std::make_unique<CsvBuilder>(InOutParameter{
-                    in, out, tsVersion, CsvProperty{ fieldSep, stringSep } }));
+                std::make_unique<TsParser>(
+                    InOutParameter{ in, out, tsVersion, lang,
+                                    CsvProperty{ stringSep, fieldSep } }),
+                std::make_unique<CsvBuilder>(
+                    InOutParameter{ in, out, tsVersion, lang,
+                                    CsvProperty{ fieldSep, stringSep } }));
             break;
 
         case ConversionType::Csv2Ts:
             return std::make_unique<Converter>(
-                std::make_unique<CsvParser>(InOutParameter{
-                    in, out, tsVersion, CsvProperty{ stringSep, fieldSep } }),
-                std::make_unique<TsBuilder>(InOutParameter{
-                    in, out, tsVersion, CsvProperty{ fieldSep, stringSep } }));
+                std::make_unique<CsvParser>(
+                    InOutParameter{ in, out, tsVersion, lang,
+                                    CsvProperty{ stringSep, fieldSep } }),
+                std::make_unique<TsBuilder>(
+                    InOutParameter{ in, out, tsVersion, lang,
+                                    CsvProperty{ fieldSep, stringSep } }));
             break;
 
         case ConversionType::Ts2Xlsx:
             return std::make_unique<Converter>(
-                std::make_unique<TsParser>(InOutParameter{
-                    in, out, tsVersion, CsvProperty{ stringSep, fieldSep } }),
-                std::make_unique<XlsxBuilder>(InOutParameter{
-                    in, out, tsVersion, CsvProperty{ fieldSep, stringSep } }));
+                std::make_unique<TsParser>(
+                    InOutParameter{ in, out, tsVersion, lang,
+                                    CsvProperty{ stringSep, fieldSep } }),
+                std::make_unique<XlsxBuilder>(
+                    InOutParameter{ in, out, tsVersion, lang,
+                                    CsvProperty{ fieldSep, stringSep } }));
             break;
 
         case ConversionType::Xlsx2Ts:
             return std::make_unique<Converter>(
-                std::make_unique<XlsxParser>(InOutParameter{
-                    in, out, tsVersion, CsvProperty{ stringSep, fieldSep } }),
-                std::make_unique<TsBuilder>(InOutParameter{
-                    in, out, tsVersion, CsvProperty{ fieldSep, stringSep } }));
+                std::make_unique<XlsxParser>(
+                    InOutParameter{ in, out, tsVersion, lang,
+                                    CsvProperty{ stringSep, fieldSep } }),
+                std::make_unique<TsBuilder>(
+                    InOutParameter{ in, out, tsVersion, lang,
+                                    CsvProperty{ fieldSep, stringSep } }));
             break;
 
         default:
@@ -55,14 +63,14 @@ std::unique_ptr<Converter> ConverterFactory::make_converter(
 }
 // std::unique_ptr<Converter> ConverterFactory::make_converter(
 //    const QString &in, const QString &out, const QString &fieldSep,
-//    const QString &stringSep, const QString &tsVersion, const int languages)
+//    const QString &stringSep, const QString &tsVersion, const int &languages)
 //{
-//    int languages = 4;
 //    return std::make_unique<Converter>(
 //        std::make_unique<TsParser>(InOutParameter{
 //            in, out, tsVersion, CsvProperty{ stringSep, fieldSep } }),
 //        std::make_unique<XlsxBuilder>(
 //            InOutParameter{ in, out, tsVersion,
-//                            CsvProperty{ fieldSep, stringSep } },
-//            languages));
+//                            CsvProperty{ stringSep, fieldSep } },
+//            InOutParameterLanguages{ in, out, languages, tsVersion,
+//                                     CsvProperty{ fieldSep, stringSep } }));
 //}

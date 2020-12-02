@@ -10,7 +10,6 @@ struct TitleHeader {
     static constexpr char Location[]    = "Location";
 };
 
-static QString Language  = "";
-static int m_locationCol = 4;
+static QString Language = "";
 static QXlsx::Document xlsx;
 static int LanguageColumn = 3;

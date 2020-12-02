@@ -18,6 +18,8 @@ std::pair<Translations, QString> TsParser::parse() const
     }
 
     Translations translations;
+    //    m_ioParameter.lang = 4;
+    //    qDebug() <<
 
     auto contexts = doc.elementsByTagName(QStringLiteral("context"));
     auto header   = doc.elementsByTagName("TS");

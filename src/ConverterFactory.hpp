@@ -11,10 +11,10 @@ class ConverterFactory
     static std::unique_ptr<Converter>
     make_converter(ConversionType type, const QString &in, const QString &out,
                    const QString &fieldSep, const QString &stringSep,
-                   const QString &tsVersion);
+                   const QString &tsVersion, const int lang);
 
     //    static std::unique_ptr<Converter>
     //    make_converter(const QString &in, const QString &out,
     //                   const QString &fieldSep, const QString &stringSep,
-    //                   const QString &tsVersion /*, int languages*/);
+    //                   const QString &tsVersion, const int &languages);
 };

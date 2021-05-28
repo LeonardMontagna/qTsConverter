@@ -145,11 +145,11 @@ Window {
                     if (settings.multiXlsx2Ts === true
                             && conversionModel.getInputFT(
                                 settings.textList) === "xlsx") {
-                        saveFolderDialog.folder = settings.lastSourceOutput
+                        saveFolderDialog.folder = loadFileDialog.folder
                         saveFolderDialog.open()
                     } else {
                         saveFileDialog.nameFilters = conversionModel.getSaveFT()
-                        saveFileDialog.folder = settings.lastSourceOutput
+                        saveFileDialog.folder = loadFileDialog.folder
                         saveFileDialog.open()
                     }
                 }
@@ -244,8 +244,8 @@ Window {
             highlighted: true
             Material.background: Material.Orange
             enabled: sourceOutput.text.length !== 0
-                          && fieldSeparator.text.length !== 0
-                          && stringSeparator.text.length !== 0
+                     && fieldSeparator.text.length !== 0
+                     && stringSeparator.text.length !== 0
             onClicked: {
                 converter.convert(comboType.currentIndex, settings.textList,
                                   sourceOutput.text, fieldSeparator.text,
